@@ -1,4 +1,3 @@
-import { CLICommand, getCommands } from "./command";
 import { State } from "./state";
 
 export async function commandHelp(state: State): Promise<void> {
