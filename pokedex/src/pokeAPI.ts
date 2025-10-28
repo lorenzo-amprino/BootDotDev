@@ -1,20 +1,20 @@
-import { PokeCache } from "./pokeCache";
-import { type CacheEntry } from "./pokeCache";
+import { Cache  } from "./pokecache";
+import { type CacheEntry } from "./pokecache";
 
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
-  cache: PokeCache;
+  cache: Cache ;
 
-  constructor(cache: PokeCache) {
+  constructor(cache: Cache ) {
     this.cache = cache;
   }
 
   async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
 
     const url = pageURL ? pageURL : `${PokeAPI.baseURL}/location-area`;
-    let cacheEntry = this.cache.get<ShallowLocations>(url);
-    if (cacheEntry != undefined) {
-      return cacheEntry.val;
+    let cachedLocation = this.cache.get<ShallowLocations>(url);
+    if (cachedLocation != undefined) {
+      return cachedLocation;
     } else {
       const res = await fetch(url);
       const locations = res.json();
