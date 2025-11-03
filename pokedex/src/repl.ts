@@ -24,10 +24,11 @@ export function startREPL(state: State) {
     else {
       const commands = state.commandsRegistry;
       const command = commands[inputArr[0]];
+      const args = inputArr.slice(1);
 
       if (command != undefined) {
         try {
-          await command.callback(state);
+          await command.callback(state, ...args);
         } catch (err: unknown) {
           if (err instanceof Error) {
             console.error("error:", err.message);

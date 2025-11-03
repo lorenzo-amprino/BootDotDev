@@ -17,5 +17,6 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.2"
   },
-  "type": "module"
+  "type": "module",
+  "vitest": {"exclude": ["dist/**"]}
 }
