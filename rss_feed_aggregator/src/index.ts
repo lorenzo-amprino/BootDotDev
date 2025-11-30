@@ -4,11 +4,18 @@ import {
   registerCommand,
   runCommand,
 } from "./commands/commandregistry";
-import { handlerLogin } from "./commands/login_command";
-import { handlerRegister } from "./commands/register_command";
-import { handlerReset } from "./commands/command_reset";
-import { usersHandler } from "./commands/command_users";
-import { aggHandler } from "./commands/command_agg";
+import {
+  handlerLogin,
+  handlerRegister,
+  handlerReset,
+  usersHandler,
+  aggHandler,
+  addFeedHandler,
+  handlerFeeds,
+  handlerFollow,
+  handlerFollowing,
+  middlewareLoggedIn,
+} from "./commands/commands";
 
 async function main() {
   const registry: CommandRegistry = {};
@@ -17,7 +24,10 @@ async function main() {
   registerCommand(registry, "reset", handlerReset);
   registerCommand(registry, "users", usersHandler);
   registerCommand(registry, "agg", aggHandler);
-
+  registerCommand(registry, "addfeed", middlewareLoggedIn(addFeedHandler));
+  registerCommand(registry, "feeds", handlerFeeds);
+  registerCommand(registry, "follow", middlewareLoggedIn(handlerFollow));
+  registerCommand(registry, "following", middlewareLoggedIn(handlerFollowing));
 
   let command = argv.slice(2, 3);
   let args = argv.slice(3);
@@ -30,7 +40,4 @@ async function main() {
 }
 
 main();
-function handlerList(cmdName: string, ...args: string[]): Promise<void> {
-  throw new Error("Function not implemented.");
-}
 
