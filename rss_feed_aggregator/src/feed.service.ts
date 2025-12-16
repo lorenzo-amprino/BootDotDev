@@ -1,3 +1,4 @@
+import { getNextFeedToFetch, markFeedFetched } from "./lib/db/queries/feeds";
 import { isChannel, isValidItem, RSSFeed } from "./rss";
 import { XMLParser } from "fast-xml-parser";
 
@@ -32,4 +33,18 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
     item: validItems,
   };
   return { channel };
+}
+
+
+export async function scrapeFeeds(){
+  const nextFeed = getNextFeedToFetch();
+  const feed = await nextFeed;
+  if(feed)  {
+    markFeedFetched(feed.id);
+    const feedFetched = await fetchFeed(feed.url);
+
+    for(let item of feedFetched.channel.item){
+      console.log(`* ${item.title} - ${item.link}`);
+    }
+  }
 }
